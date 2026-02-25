@@ -1,0 +1,28 @@
+---
+description: Agent 如何更好使用 Cursor（规则、技能、设置）
+alwaysApply: true
+---
+# 提升 Agent 使用 Cursor 的能力
+
+## 规则 (Rules)
+
+- 规则放在 **PROJECT_ROOT/.cursor/rules/**，文件名用 kebab-case，扩展名 **.mdc**。
+- 每个规则文件含 YAML frontmatter：`description`、可选 `globs`（文件模式）、`alwaysApply`（是否全局应用）。
+- 需要持久化项目约定、编码标准或文件级模式时，在此目录新增或编辑规则；单条规则保持简洁（建议 under 50 行），一规则一主题。
+
+## 技能 (Skills)
+
+- 项目技能在 **.cursor/skills/技能名/SKILL.md**；个人技能在 **~/.cursor/skills/**。不要往 ~/.cursor/skills-cursor/ 写。
+- SKILL.md 必须有 frontmatter：`name`（小写+连字符，≤64 字）、`description`（说清做什么+何时触发，第三人称，含关键词）。
+- 技能内容要简洁、可执行；超过 500 行时用渐进披露（SKILL.md 主文 + reference.md/examples.md）。需要可靠执行时优先提供 scripts/ 下的脚本而非现场生成代码。
+
+## 设置 (Settings)
+
+- 用户/编辑器设置：Windows 在 **%APPDATA%\\Cursor\\User\\settings.json**。修改前先读取，只改用户要求项，保持 JSON 合法。
+- 常见项：`editor.fontSize`、`editor.formatOnSave`、`workbench.colorTheme`、`files.autoSave`。大改动后提示用户可能需要重载窗口。
+
+## 行为习惯
+
+- 用户未指定时，根据对话判断：要「持久约定」→ 写规则；要「可复用流程/领域知识」→ 写技能；要「改编辑器行为」→ 改 settings.json。
+- **飞书待办**：当用户说「处理飞书待办」时，读取 `agent-tasks/lark-pending.md`，对每条无 `**[已回复]**` 的块运行 `python .cursor/skills/lark-listener/scripts/lark_reply.py message_id "回复" --mark-done --workspace 项目根`。
+- 写规则或技能时，包含具体示例或步骤，避免空泛描述；术语统一、不用 Windows 反斜杠路径。

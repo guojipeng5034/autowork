@@ -1,0 +1,34 @@
+---
+description: 处理飞书待办 - 读 lark-pending.md，运行 lark_reply.py 发送
+globs: agent-tasks/lark-pending.md
+alwaysApply: false
+---
+
+# 处理飞书待办
+
+当用户说「处理飞书待办」时，**必须**执行：
+
+## 步骤
+
+1. **读取** `agent-tasks/lark-pending.md`，找到每个**不含** `**[已回复]**` 的块（按 `---` 分隔）
+2. 每个块含 `message_id: om_xxx` 和 `用户消息：` 后的用户文本
+3. **对每条**：理解用户消息，完成任务，得到回复内容
+4. **运行**（用 --file 避免中文乱码）：将回复写入 `agent-tasks/reply-temp.txt`，再执行：
+   ```
+   python .cursor/skills/lark-listener/scripts/lark_reply.py om_xxx --file agent-tasks/reply-temp.txt --mark-done --workspace .
+   ```
+5. 逐条处理，全部发完为止
+
+## 示例
+
+块内容：
+```
+message_id: om_x100b56de93ab14acb27033af05c3b79
+**[2026-02-25]** 用户消息：
+测试
+```
+
+执行：
+```
+python .cursor/skills/lark-listener/scripts/lark_reply.py om_x100b56de93ab14acb27033af05c3b79 "已收到测试" --mark-done --workspace D:\kuaikuAi\autowork
+```

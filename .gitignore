@@ -1,0 +1,8 @@
+# 飞书密钥，勿提交
+lark-config.json
+# Agent 临时回复文件
+agent-tasks/current_reply.txt
+agent-tasks/current_reply.md
+agent-tasks/lark-reply-*.txt
+agent-tasks/reply-temp.txt
+agent-tasks/lark-agent-*.log
